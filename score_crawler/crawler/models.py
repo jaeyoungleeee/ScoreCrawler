@@ -3,15 +3,19 @@ from django.db import models
 
 class Member(models.Model):
     github_username = models.CharField(
-        max_legth=40,
+        max_length=40,
         blank=True,
         null=True
     )
     boj_username = models.CharField(
-        max_legth=40,
+        max_length=40,
         blank=True,
         null=True
     )
+
+    def __str__(self):
+        return self.github_username
+    
 
 
 class GitHubLog(models.Model):

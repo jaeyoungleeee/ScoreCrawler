@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no"/>
+  <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+  {%load static%}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+  {% block css %}{% endblock %}
+  <title>Piro Github Tracker</title>
+</head>
+<body>
+  <nav id="nav-fixed">
+    <div class="nav-wrapper container">
+      <a href="{% url 'main' %}" class="brand-logo" id="brand-logo-fixed">Tracker</a>
+    </div>
+  </nav>
+
+
+  <div class="main-wrapper">
+    {% block content%}{% endblock %}
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-copyright">
+      <div class="container">
+      © 2018 All Rights Reserved.
+      <a class="grey-text text-lighten-4 right" href="https://github.com/jaeyoungleeee/ScoreCrawler">Github repository</a>
+      </div>
+    </div>
+  </footer>
+{% block js %}{% endblock %}
+</body>
+</html>
