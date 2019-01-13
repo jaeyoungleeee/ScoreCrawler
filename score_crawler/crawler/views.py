@@ -1,7 +1,9 @@
-from django.views.generic import TemplateView, DetailView
+from django.db.models import Q
 from django.http import Http404
+from django.utils import timezone
+from django.views.generic import TemplateView, DetailView
 
-from .models import Member
+from .models import Member, GitHubLog
 
 
 class MainView(TemplateView):
@@ -35,7 +37,7 @@ class MemberDetailView(DetailView):
 
         name = self.kwargs.get(self.slug_url_kwarg)
         queryset = queryset.filter(
-            **{'github_username': name, 'boj_username': name}
+            Q(github_username=name)|Q(boj_username=name)
         )
 
         try:
@@ -47,4 +49,26 @@ class MemberDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(MemberDetailView, self).get_context_data(**kwargs)
+        context.update(
+            {
+                'github_week_data': self.get_github_weeK_data()
+            }
+        )
         return context
+
+    def get_github_weeK_data(self):
+        now = timezone.localtime()
+        last_week = now - timezone.timedelta(days=6)
+        logs = GitHubLog.objects.filter(date__gte=last_week, member=self.object)
+        return [log.point for log in logs]
+
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        member = self.object
+        assert isinstance(member, Member)
+        now = timezone.localtime()
+        if not member.crawl_logs.filter(date__year=now.year, date__month=now.month, date__day=now.day).exists():
+            member.process()
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)

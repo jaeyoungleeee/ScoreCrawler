@@ -5,9 +5,11 @@
         <p>{{object.github_username}}</p>
     </div>
 </div>
-
-<canvas id='git-graph'></canvas>
-
+<div class="row">
+  <div class="chart-container col s8 offset-s2" >
+    <canvas id='git-graph' height="150px"></canvas>
+  </div>
+</div>
 <div class='row'>
     <div class="col s3 offset-s6">
         <p>{{object.boj_username}}</p>
@@ -20,14 +22,27 @@
 
 {% block js %}
 <script>
-var ctx = document.getElementById('git-graph').getContext('2d');
-var graph = new Chart(ctx, {
-    type: 'line',
-    data: {
-        datasets: [{
-            data: [0, 10 ,2 ,3 ,4 ,5 ,7]
-        }]
-    },
-});
+    var dates = [];
+    var date = new Date();
+    for (var i = 6; i > -1; i--){
+        var tempDate = new Date();
+        tempDate.setDate(date.getDate()-i);
+        var str = 1 + tempDate.getMonth() + "/" + tempDate.getDate();
+        dates.push(str);
+    }
+    new Chart(
+    document.getElementById("git-graph"),
+    {
+        "type":"line",
+        "data":{
+            "labels": dates,
+            "datasets":[{"label":"{{ object.github_username }}","data":{{ github_week_data }},
+                "fill":false,
+                "borderColor":"rgb(75, 192, 192)",
+                "lineTension":0.1}]
+        },
+        "options":{}
+    }
+    );
 </script>
 {% endblock js %}
