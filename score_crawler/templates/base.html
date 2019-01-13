@@ -10,6 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
   {%load static%}
   <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+  {% block  head%}{% endblock  %}
   {% block css %}{% endblock %}
   <title>Piro Github Tracker</title>
 </head>
@@ -28,7 +29,7 @@
   <footer class="page-footer">
     <div class="footer-copyright">
       <div class="container">
-      © 2018 All Rights Reserved.
+      © 2019 All Rights Reserved.
       <a class="grey-text text-lighten-4 right" href="https://github.com/jaeyoungleeee/ScoreCrawler">Github repository</a>
       </div>
     </div>

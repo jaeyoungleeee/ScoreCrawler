@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class='row'>
+    <div class="col s3 offset-s6">
+        <p>{{object.github_username}}</p>
+    </div>
+</div>
+
+<canvas id='git-graph'></canvas>
+
+<div class='row'>
+    <div class="col s3 offset-s6">
+        <p>{{object.boj_username}}</p>
+    </div>
+</div>
+{% endblock content %}
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+{% endblock head %}
+
+{% block js %}
+<script>
+var ctx = document.getElementById('git-graph').getContext('2d');
+var graph = new Chart(ctx, {
+    type: 'line',
+    data: {
+        datasets: [{
+            data: [0, 10 ,2 ,3 ,4 ,5 ,7]
+        }]
+    },
+});
+</script>
+{% endblock js %}
