@@ -81,47 +81,28 @@ class Member(models.Model):
         else:
             raise CrawlingException()
 
-    # @transaction.atomic()
-    # def boj_crawl(self):
-    #     url = f'https://www.acmicpc.net/status?problem_id=&user_id={self.boj_username}&language_id=-1&result_id=-1'
-    #     resp = requests.get(url)
-    #     if resp.status_code == 200:
-    #         pattern = re.compile(
-    #             r'title="(?P<year>\d+)년 (?P<month>\d+)월 (?P<day>\d+)일 (?P<hour>\d+)시'
-    #         )
+    @transaction.atomic()
+    def boj_crawl(self):
+        url = f'https://www.acmicpc.net/status?problem_id=&user_id={self.boj_username}&language_id=-1&result_id=-1'
+        resp = requests.get(url)
+        if resp.status_code == 200:
+            pattern = re.compile(
+                r'title="(?P<year>\d+)년 (?P<month>\d+)월 (?P<day>\d+)일 (?P<hour>\d+)시'
+            )
 
-    #         html = resp.texst
-    #         dates = pattern.findall(html)
+            html = resp.texst
+            dates = pattern.findall(html)
 
-    #         refined_dates = []
+            refined_dates = []
 
-    #         for date in dates:
-    #             refined_date = ''
-    #             for i in date:
-    #                 refined_date += i+'-'
-    #             refined_date = refined_date[:-1]
-    #             refined_dates.append(refined_date)
+            for date in dates:
+                refined_date = ''
+                for i in date:
+                    refined_date += i+'-'
+                refined_date = refined_date[:-1]
+                refined_dates.append(refined_date)
 
-    #     # BojLog.objects.get(memeber=self.)
+        BojLog.objects.get(memeber=self.)
 
-    #     else:
-    #         raise CrawlingException()
-
-
-class CrawlLog(models.Model):
-    member = models.ForeignKey(
-        Member,
-        on_delete=models.CASCADE,
-        related_name='crawl_logs'
-    )
-    date = models.DateTimeField(
-        auto_now_add=True
-    )
-    status = models.IntegerField(
-        choices=(
-            (1, '성공'),
-            (2, 'github-실패'),
-            (3, 'boj-실패'),
-            (4, '실패')
-        )
-    )
+        else:
+            raise CrawlingException()
