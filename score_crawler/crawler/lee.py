@@ -93,14 +93,13 @@ class Member(models.Model):
             html = resp.texst
             dates = pattern.findall(html)
 
-            refined_dates = []
-
             for date in dates:
                 refined_date = ''
                 for i in date:
                     refined_date += i+'-'
                 refined_date = refined_date[:-1]
-                refined_dates.append(refined_date)
+
+                if not BojLog.objects.filter(member=self.boj_username, ).exists():
 
         BojLog.objects.get(memeber=self.)
 
