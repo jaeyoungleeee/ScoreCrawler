@@ -1,0 +1,335 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 21ca52f..ea248ab 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -1,2 +1,42 @@[m
+ # ScoreCrawler[m
+ crawler for the github commit and baekjoon score[m
+[32m+[m
+[32m+[m[32mimport re, datetime, requests[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef boj_crawl(self):[m
+[32m+[m[32m    url = '~' #api urls[m
+[32m+[m[41m    [m
+[32m+[m[32m    resp=request.get(urls)[m
+[32m+[m[32m    html = resp.text[m
+[32m+[m
+[32m+[m[32m    pattern = re.compile('[m
+[32m+[m[32m        r'<?P(\d+)'[m
+[32m+[m[32m    ')[m
+[32m+[m[32m    parse[m
+[32m+[m
+[32m+[m[32m    dates = pattern.findall(html)[m
+[32m+[m
+[32m+[m[32m    #now refine data to 'yyyy-mm-dd' format[m
+[32m+[m
+[32m+[m[32m    for date in dates:[m
+[32m+[m[32m        refined_date = ''[m
+[32m+[m[32m        for s in date :[m
+[32m+[m[32m            refined_date +=f'{i}-'[m
+[32m+[m[32m        refined_date = refined_date[:-1][m
+[32m+[m[41m        [m
+[32m+[m
+[32m+[m[32m        last-commit :[m
+[32m+[m
+[32m+[m[32m        count[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        now = datetime.now()[m
+[32m+[m[32m        if now - datetime.now() > 0 :[m
+[32m+[m[32m            new = BojLog(username=self.username, dat=date)[m
+[41m+[m
+[41m+        [m
+[41m+[m
+[41m+[m
+[41m+    [m
+[41m+[m
+[1mdiff --git a/score_crawler/crawler/__pycache__/models.cpython-37.pyc b/score_crawler/crawler/__pycache__/models.cpython-37.pyc[m
+[1mindex f3f9462..f85b75f 100644[m
+Binary files a/score_crawler/crawler/__pycache__/models.cpython-37.pyc and b/score_crawler/crawler/__pycache__/models.cpython-37.pyc differ
+[1mdiff --git a/score_crawler/crawler/__pycache__/views.cpython-37.pyc b/score_crawler/crawler/__pycache__/views.cpython-37.pyc[m
+[1mindex 9458660..9c469e3 100644[m
+Binary files a/score_crawler/crawler/__pycache__/views.cpython-37.pyc and b/score_crawler/crawler/__pycache__/views.cpython-37.pyc differ
+[1mdiff --git a/score_crawler/crawler/crawl_test.py b/score_crawler/crawler/crawl_test.py[m
+[1mindex e69de29..371f978 100644[m
+[1m--- a/score_crawler/crawler/crawl_test.py[m
+[1m+++ b/score_crawler/crawler/crawl_test.py[m
+[36m@@ -0,0 +1,54 @@[m
+[32m+[m[32mimport re, requests, sys[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef boj_crawl(name):[m
+[32m+[m
+[32m+[m[32m    url = f'https://www.acmicpc.net/status?problem_id=&user_id={name}&language_id=-1&result_id=-1'[m
+[32m+[m[32m    resp = requests.get(url)[m
+[32m+[m[32m    if resp.status_code == 200:[m
+[32m+[m[32m        pattern = re.compile([m
+[32m+[m[32m            r'<td><a href="/problem/(?P<prob_num>\d+)" * title="(?P<year>\d+)년 (?P<month>\d+)월 (?P<day>\d+)일 (?P<hour>\d+)시'[m
+[32m+[m[32m        )[m
+[32m+[m
+[32m+[m[32m        html = resp.text[m
+[32m+[m[32m        data = pattern.findall(html)[m
+[32m+[m[32m        sub_code = re.compile(r'id = "solution-(?P<submission_code>\d+)"')[m
+[32m+[m[32m        last_sub = int((sub_code).findall(html)[-1])-1[m
+[32m+[m[32m        print(data)[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    # #    list of how many problems they solved[m
+[32m+[m[32m    #[m
+[32m+[m[32m    # while (data[-1] < 일주일 전):[m
+[32m+[m[32m    #     url = f'https://www.acmicpc.net/status?user_id={name}&top={last_sub}'[m
+[32m+[m[32m    #     resp = requests.get(url)[m
+[32m+[m[32m    #     if resp.status_code == 200:[m
+[32m+[m[32m    #         pattern = re.compile([m
+[32m+[m[32m    #             r'title="(?P<year>\d+)년 (?P<month>\d+)월 (?P<day>\d+)일 (?P<hour>\d+)시'[m
+[32m+[m[32m    #         )[m
+[32m+[m[32m    #[m
+[32m+[m[32m    #         html = resp.text[m
+[32m+[m[32m    #         data += pattern.findall(html)[m
+[32m+[m[32m    #[m
+[32m+[m[32m    #         last_sub = re.compile(r'id = "solution-(?P<submission_code>\d+)"').findall(html)[-1][m
+[32m+[m[32m    #[m
+[32m+[m[32m    #[m
+[32m+[m[32m    # # for date in data :[m
+[32m+[m[32m    # #     if date[0]=='year' & date[1]=='' :[m
+[32m+[m[32m    # #         points[0]+=1[m
+[32m+[m[32m    #[m
+[32m+[m[32m    #[m
+[32m+[m[32m    #[m
+[32m+[m[32m    #[m
+[32m+[m[32m    # print('\n'.join(map(lambda x: str(x), data)))[m
+[32m+[m[32m    # print(len(data))[m
+[32m+[m[32m    #[m
+[32m+[m[32m    #[m
+[32m+[m
+[32m+[m[32m        # print('\n'.join(map(lambda x: str(x), data)))[m
+[32m+[m[32m        # print(len(data))[m
+[32m+[m
+[32m+[m[32mif __name__ == '__main__':[m
+[32m+[m[32m    name = sys.argv[m
+[32m+[m[32m    print(name[1])[m
+[32m+[m[32m    boj_crawl(name[1])[m
+[1mdiff --git a/score_crawler/crawler/models.py b/score_crawler/crawler/models.py[m
+[1mindex c684001..203d52f 100644[m
+[1m--- a/score_crawler/crawler/models.py[m
+[1m+++ b/score_crawler/crawler/models.py[m
+[36m@@ -6,8 +6,6 @@[m [mimport re[m
+ [m
+ from .exceptions import CrawlingException[m
+ [m
+[31m-[m
+[31m-[m
+ class GitHubLog(models.Model):[m
+     member = models.ForeignKey([m
+         'crawler.Member',[m
+[36m@@ -47,7 +45,6 @@[m [mclass Member(models.Model):[m
+         crawl_log = CrawlLog(member=self, status=1)[m
+         try:[m
+             self.git_crawl()[m
+[31m-            self.boj_crawl()[m
+         except CrawlingException:[m
+             crawl_log.status = 1[m
+         crawl_log.save()[m
+[36m@@ -82,40 +79,7 @@[m [mclass Member(models.Model):[m
+             raise CrawlingException()[m
+ [m
+ [m
+[31m-    @transaction.atomic()[m
+[31m-    def boj_crawl(self):[m
+[31m-        url = f'https://www.acmicpc.net/status?problem_id=&user_id={self.boj_username}&language_id=-1&result_id=-1'[m
+[31m-        resp = requests.get(url)[m
+[31m-        if resp.status_code == 200:[m
+[31m-            pattern = re.compile([m
+[31m-                r'title="(?P<year>\d+)년 (?P<month>\d+)월 (?P<day>\d+)일 (?P<hour>\d+)시'[m
+[31m-            )[m
+[31m-[m
+[31m-            html = resp.text[m
+[31m-            dates = pattern.findall(html)[m
+[31m-[m
+[31m-            for date in dates:[m
+[31m-                refined_date = ''[m
+[31m-                for i in date:[m
+[31m-                    refined_date += i+'-'[m
+[31m-                refined_date = refined_date[:-1][m
+[31m-[m
+[31m-                # if not BojLog.objects.filter().exists():[m
+[31m-[m
+ [m
+[31m-        # BojLog.objects.get(memeber)[m
+[31m-        #[m
+[31m-        # else:[m
+[31m-        #     raise CrawlingException()[m
+[31m-[m
+[31m-    @classmethod[m
+[31m-    def account_exists(cls, name) :[m
+[31m-        git_url = f'https://github.com/users/{name}/contributions'[m
+[31m-        git_resp = requests.get(git_url)[m
+[31m-[m
+[31m-        boj_url = f'https://www.acmicpc.net/status?problem_id=&user_id={name}&language_id=-1&result_id=-1'[m
+[31m-        boj_resp = requests.get(boj_url)[m
+[31m-        return git_resp.status_code==200 & boj_resp.status_code == 200[m
+ [m
+ [m
+ class CrawlLog(models.Model):[m
+[36m@@ -135,6 +99,3 @@[m [mclass CrawlLog(models.Model):[m
+             (4, '실패')[m
+         )[m
+     )[m
+[31m-[m
+[31m-    def __str__(self):[m
+[31m-        return f'{self.date}'[m
+[1mdiff --git a/score_crawler/crawler/views.py b/score_crawler/crawler/views.py[m
+[1mindex bf2e5fa..dfbff97 100644[m
+[1m--- a/score_crawler/crawler/views.py[m
+[1m+++ b/score_crawler/crawler/views.py[m
+[36m@@ -3,6 +3,8 @@[m [mfrom django.http import Http404[m
+ from django.utils import timezone[m
+ from django.views.generic import TemplateView, DetailView[m
+ [m
+[32m+[m[32mimport requests[m
+[32m+[m
+ from .models import Member, GitHubLog[m
+ [m
+ [m
+[36m@@ -12,11 +14,6 @@[m [mclass MainView(TemplateView):[m
+     def get_context_data(self, **kwargs):[m
+         context = super(MainView, self).get_context_data(**kwargs)[m
+         names = [][m
+[31m-[m
+[31m-        #check the existence of the retrieved name.[m
+[31m-        # if not exists():[m
+[31m-        #     create_new(member_name)[m
+[31m-[m
+         for m in Member.objects.all():[m
+             if m.github_username:[m
+                 names.append(m.github_username)[m
+[36m@@ -30,45 +27,40 @@[m [mclass MainView(TemplateView):[m
+         )[m
+         return context[m
+ [m
+[31m-    #in case that a member retrieved doesn't exist[m
+[31m-    # existence test should precede before this code.[m
+[31m-        def create_new(self):[m
+[31m-            Member.objects.create()[m
+ [m
+ class MemberDetailView(DetailView):[m
+     model = Member[m
+     slug_url_kwarg = 'name'[m
+     template_name = 'detail.html'[m
+ [m
+[31m-    #what would be assigned to queryset?[m
+[31m-    # in the usage, no queryset.[m
+     def get_object(self, queryset=None):[m
+ [m
+         name = self.kwargs.get(self.slug_url_kwarg)[m
+[31m-        if not Member.objects.filter(Q(github_username=name) | Q(boj_username=name)).exists():[m
+[31m-            if not Member.account_exists(name):[m
+[31m-                raise Http404(("No %(verbose_name)s found in Github and BOJ") %[m
+[31m-                           {'verbose_name': name})[m
+[31m-            else:[m
+[32m+[m[32m        queryset = self.get_queryset()[m
+[32m+[m
+[32m+[m[32m        if not queryset.filter(Q(github_username=name)|Q(boj_username=name)).exists():[m
+[32m+[m[32m            url = f'https://github.com/users/{name}/contributions'[m
+[32m+[m[32m            resp = requests.get(url)[m
+[32m+[m[32m            if resp.status_code == 404 :[m
+[32m+[m[32m                raise Http404(f"No {name} on github")[m
+[32m+[m[32m            else :[m
+                 Member.objects.create(github_username=name, boj_username=name)[m
+[31m-[m
+[31m-        queryset = self.get_queryset().filter([m
+[31m-            Q(github_username=name) | Q(boj_username=name)[m
+[31m-        )[m
+[32m+[m[32m                queryset = self.get_queryset() # 위에것과 중복인 것 같음... ㅋㅋ[m
+ [m
+         obj = queryset.get()[m
+[32m+[m
+         return obj[m
+ [m
+     def get_context_data(self, **kwargs):[m
+         context = super(MemberDetailView, self).get_context_data(**kwargs)[m
+         context.update([m
+             {[m
+[31m-                'github_week_data': self.get_github_week_data()[m
+[32m+[m[32m                'github_week_data': self.get_github_weeK_data()[m
+             }[m
+         )[m
+         return context[m
+ [m
+[31m-    def get_github_week_data(self):[m
+[32m+[m[32m    def get_github_weeK_data(self):[m
+         now = timezone.localtime()[m
+         last_week = now - timezone.timedelta(days=6)[m
+         logs = GitHubLog.objects.filter(date__gte=last_week, member=self.object)[m
+[36m@@ -76,17 +68,12 @@[m [mclass MemberDetailView(DetailView):[m
+ [m
+ [m
+     def get(self, request, *args, **kwargs):[m
+[31m-[m
+         self.object = self.get_object()[m
+[31m-[m
+         member = self.object[m
+         assert isinstance(member, Member)[m
+[31m-[m
+         now = timezone.localtime()[m
+[31m-[m
+         if not member.crawl_logs.filter(date__year=now.year, date__month=now.month, date__day=now.day).exists():[m
+             member.process()[m
+[31m-[m
+         context = self.get_context_data(object=self.object)[m
+[31m-[m
+         return self.render_to_response(context)[m
+[41m+[m
+[1mdiff --git a/score_crawler/db.sqlite3 b/score_crawler/db.sqlite3[m
+[1mindex 70f68ea..2d562a4 100644[m
+Binary files a/score_crawler/db.sqlite3 and b/score_crawler/db.sqlite3 differ
+[1mdiff --git a/score_crawler/score_crawler/__pycache__/settings.cpython-37.pyc b/score_crawler/score_crawler/__pycache__/settings.cpython-37.pyc[m
+[1mindex 165908a..8baf2fd 100644[m
+Binary files a/score_crawler/score_crawler/__pycache__/settings.cpython-37.pyc and b/score_crawler/score_crawler/__pycache__/settings.cpython-37.pyc differ
+[1mdiff --git a/score_crawler/score_crawler/__pycache__/urls.cpython-37.pyc b/score_crawler/score_crawler/__pycache__/urls.cpython-37.pyc[m
+[1mindex 6f2def5..9c95041 100644[m
+Binary files a/score_crawler/score_crawler/__pycache__/urls.cpython-37.pyc and b/score_crawler/score_crawler/__pycache__/urls.cpython-37.pyc differ
+[1mdiff --git a/score_crawler/score_crawler/settings.py b/score_crawler/score_crawler/settings.py[m
+[1mindex a56590f..6b9a868 100644[m
+[1m--- a/score_crawler/score_crawler/settings.py[m
+[1m+++ b/score_crawler/score_crawler/settings.py[m
+[36m@@ -39,7 +39,7 @@[m [mINSTALLED_APPS = [[m
+     'django.contrib.staticfiles',[m
+ [m
+     'crawler',[m
+[31m-    'debug_toolbar',[m
+[32m+[m[32m    #'debug_toolbar',[m
+ [m
+ ][m
+ [m
+[36m@@ -51,7 +51,7 @@[m [mMIDDLEWARE = [[m
+     'django.contrib.auth.middleware.AuthenticationMiddleware',[m
+     'django.contrib.messages.middleware.MessageMiddleware',[m
+     'django.middleware.clickjacking.XFrameOptionsMiddleware',[m
+[31m-    'debug_toolbar.middleware.DebugToolbarMiddleware',[m
+[32m+[m[32m    #'debug_toolbar.middleware.DebugToolbarMiddleware',[m
+ ][m
+ [m
+ INTERNAL_IPS = ('127.0.0.1',)[m
+[1mdiff --git a/score_crawler/score_crawler/urls.py b/score_crawler/score_crawler/urls.py[m
+[1mindex 949357b..06a4dbe 100644[m
+[1m--- a/score_crawler/score_crawler/urls.py[m
+[1m+++ b/score_crawler/score_crawler/urls.py[m
+[36m@@ -21,15 +21,3 @@[m [murlpatterns = [[m
+     path('admin/', admin.site.urls),[m
+     path('', include('crawler.urls'),)[m
+ ][m
+[31m-[m
+[31m-if settings.DEBUG:[m
+[31m-    import debug_toolbar[m
+[31m-    urlpatterns.append([m
+[31m-        path('__debug__', include(debug_toolbar.urls))[m
+[31m-    )[m
+[31m-[m
+[31m-INTERNAL_IPS = ('127.0.0.1',)[m
+[31m-[m
+[31m-def show_toolbar(request):[m
+[31m-    return True[m
+[31m-SHOW_TOOLBAR_CALLBACK = show_toolbar[m
+\ No newline at end of file[m
