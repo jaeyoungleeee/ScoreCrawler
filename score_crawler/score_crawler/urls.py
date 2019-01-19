@@ -15,8 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('crawler.urls'),)
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns.append(
+        path('__debug__', include(debug_toolbar.urls))
+    )
+
+INTERNAL_IPS = ('127.0.0.1',)
+
+def show_toolbar(request):
+    return True
+SHOW_TOOLBAR_CALLBACK = show_toolbar

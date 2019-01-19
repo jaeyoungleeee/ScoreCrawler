@@ -4,9 +4,8 @@ from django.utils import timezone
 import requests
 import re
 
+from .exceptions import CrawlingException
 
-class CrawlingException(Exception):
-    pass
 
 
 class GitHubLog(models.Model):
@@ -48,6 +47,7 @@ class Member(models.Model):
         crawl_log = CrawlLog(member=self, status=1)
         try:
             self.git_crawl()
+            self.boj_crawl()
         except CrawlingException:
             crawl_log.status = 1
         crawl_log.save()
@@ -81,31 +81,41 @@ class Member(models.Model):
         else:
             raise CrawlingException()
 
-    # @transaction.atomic()
-    # def boj_crawl(self):
-    #     url = f'https://www.acmicpc.net/status?problem_id=&user_id={self.boj_username}&language_id=-1&result_id=-1'
-    #     resp = requests.get(url)
-    #     if resp.status_code == 200:
-    #         pattern = re.compile(
-    #             r'title="(?P<year>\d+)년 (?P<month>\d+)월 (?P<day>\d+)일 (?P<hour>\d+)시'
-    #         )
 
-    #         html = resp.texst
-    #         dates = pattern.findall(html)
+    @transaction.atomic()
+    def boj_crawl(self):
+        url = f'https://www.acmicpc.net/status?problem_id=&user_id={self.boj_username}&language_id=-1&result_id=-1'
+        resp = requests.get(url)
+        if resp.status_code == 200:
+            pattern = re.compile(
+                r'title="(?P<year>\d+)년 (?P<month>\d+)월 (?P<day>\d+)일 (?P<hour>\d+)시'
+            )
 
-    #         refined_dates = []
+            html = resp.text
+            dates = pattern.findall(html)
 
-    #         for date in dates:
-    #             refined_date = ''
-    #             for i in date:
-    #                 refined_date += i+'-'
-    #             refined_date = refined_date[:-1]
-    #             refined_dates.append(refined_date)
+            for date in dates:
+                refined_date = ''
+                for i in date:
+                    refined_date += i+'-'
+                refined_date = refined_date[:-1]
 
-    #     # BojLog.objects.get(memeber=self.)
+                # if not BojLog.objects.filter().exists():
 
-    #     else:
-    #         raise CrawlingException()
+
+        # BojLog.objects.get(memeber)
+        #
+        # else:
+        #     raise CrawlingException()
+
+    @classmethod
+    def account_exists(cls, name) :
+        git_url = f'https://github.com/users/{name}/contributions'
+        git_resp = requests.get(git_url)
+
+        boj_url = f'https://www.acmicpc.net/status?problem_id=&user_id={name}&language_id=-1&result_id=-1'
+        boj_resp = requests.get(boj_url)
+        return git_resp.status_code==200 & boj_resp.status_code == 200
 
 
 class CrawlLog(models.Model):
@@ -125,3 +135,6 @@ class CrawlLog(models.Model):
             (4, '실패')
         )
     )
+
+    def __str__(self):
+        return f'{self.date}'
